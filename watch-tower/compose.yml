@@ -1,0 +1,14 @@
+services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Paris
+      - WATCHTOWER_SCHEDULE= 0 0 4 * * *
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_REMOVE_VOLUMES=true
+      - WATCHTOWER_NOTIFICATIONS_LEVEL=debug
+    volumes:
+      - /run/user/1000/docker.sock:/var/run/docker.sock

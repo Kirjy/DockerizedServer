@@ -1,0 +1,47 @@
+networks:
+  frontend:
+    external: true
+  backend:
+
+services:
+  # Main Nextcloud Service
+  app:
+    image: nextcloud:31 # Specifying the version is mandatory as Nextcloud won't allow upgrade that skip a major release
+    restart: always
+    volumes: # Using many volumes in order to have a specific one for files, one for config etc...
+      - ./data/cutsom_apps:/var/www/html/custom_apps
+      - ./data/data:/var/www/html/data
+      - ./data/html:/var/www/html # Needed for updating
+      - ./data/config:/var/www/html/config
+    ports:
+      - 8000:80
+    environment:
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${MYSQL_HOST}
+      TZ: 'Europe/Paris'
+    networks:
+      - frontend
+      - backend
+    links:
+      - db
+    external_links:
+      - npm-web
+    container_name: nextcloud-app
+
+  # MariaDB Database for Nextcloud
+  db:
+    image: 'mariadb:latest'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: 'Europe/Paris'
+    volumes:
+      - ./data/mariadb/mysql:/var/lib/mysql
+    networks:
+      - backend
+    container_name: nextcloud-db

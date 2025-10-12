@@ -1,0 +1,2 @@
+#cleans up the files
+docker exec -ti --user www-data nextcloud-app /var/www/html/occ files:cleanup

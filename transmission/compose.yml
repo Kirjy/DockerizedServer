@@ -1,0 +1,35 @@
+services:
+  # Main Transmission Service
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    restart: unless-stopped
+    stop_grace_period: 10s
+    security_opt:
+      - no-new-privileges:true
+      - no-sandbox:true
+    read_only: true
+    ports:
+      - "9091:9091" # HTTP port (host:container)
+      - "51413:51413" # Torrent port (host:container)
+      - "51413:51413/udp" # Torrent port UDP (host:container)
+    networks:
+      - frontend
+      - backend
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/Paris
+    volumes:
+      - ./data:/config
+      - ${TRANSMISSION_DOWNLOADS_FOLDER}:/downloads/complete # downloads are saved on a mounted samba share
+      - ${TRANSMISSION_INCOMPLETE_FOLDER}:/downloads/incomplete # downloads are saved on a mounted samba share
+    container_name: transmission-app
+
+networks:
+  frontend:
+    driver: bridge
+    external: true
+  backend:

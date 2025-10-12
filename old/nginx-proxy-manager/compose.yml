@@ -1,0 +1,37 @@
+networks:
+  frontend: # this network will be used for any other docker that need an access through the reverse proxy
+    external: false
+    name: frontend
+  backend:
+
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+      - '81:81'
+    environment:
+      DB_SQLITE_FILE: "/data/npm.sqlite"
+    volumes:
+      - ./data:/data
+      - ./data/letsencrypt:/etc/letsencrypt
+    networks:
+      - frontend
+      - backend
+    container_name: npm-app
+
+  db:
+    image: 'mariadb:latest'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      - backend
+    container_name: npm-db

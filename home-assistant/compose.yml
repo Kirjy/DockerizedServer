@@ -1,0 +1,54 @@
+networks:
+  frontend:
+    external: true
+  backend:
+
+services:
+  homeassistant:
+    container_name: home-assistant-app
+    image: "homeassistant/home-assistant:latest"
+    volumes:
+      - ./data/ha-config:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    privileged: true
+    networks:
+      - backend
+      - frontend
+    ports:
+      - 8123:8123
+    environment:
+      - TZ=Europe/Paris
+      - DISABLE_JEMALLOC:true
+
+#  mqtt:
+#    container_name: z2m-mosquitto
+#    image: eclipse-mosquitto:latest
+#    restart: always
+#    volumes:
+#      - ./data/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+#      - ./data/mosquitto/data:/mosquitto/data
+#      - ./data/mosquitto/log:/mosquitto/log # easy access to logs
+#    networks:
+#      - backend
+#    ports:
+#      - 1883:1883
+#      - 9001:9001
+
+#  zigbee2mqtt:
+#    container_name: z2m-zigbee2mqtt
+#    image: koenkk/zigbee2mqtt:latest
+#    restart: always
+#    privileged: true
+#    volumes:
+#      - ./data/zigbee2mqtt:/app/data
+#      - /run/udev:/run/udev:ro
+#    ports:
+#      - 8080:8080
+#    networks:
+#      - backend
+#      - frontend
+#    environment:
+#      - TZ=Europe/Paris
+#    devices:
+#      - /dev/ttyUSB0:/dev/ttyUSB0

@@ -1,0 +1,14 @@
+services:
+  app:
+    image: zixia/simple-mail-forwarder:latest
+    container_name: simple-mail-forwarder
+    ports:
+      - "25:25"
+    environment:
+      - SMF_CONFIG=${DESTINATION_EMAIL_DOMAIN}:${DESTINATION_EMAIL_ADDRESS}:${DESTINATION_EMAIL_PASSWORD}
+    restart: unless-stopped
+    volumes:
+      - ./data/postfix:/var/log/postfix
+      - ./data/certs:/etc/postfix/cert
+      - ./data/dkim:/var/db/dkim
+      - ./data/mail:/var/mail

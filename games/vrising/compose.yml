@@ -1,0 +1,22 @@
+services:
+  vrising:
+    image: trueosiris/vrising
+    environment:
+      - TZ=Europe/Paris
+      - SERVERNAME=${VRISING_SERVER_NAME}
+    volumes:
+      - type: bind
+        source: ./data
+        target: /mnt/vrising/server
+        bind:
+          create_host_path: true
+      - type: bind
+        source: ./data
+        target: /mnt/vrising/persistentdata
+        bind:
+          create_host_path: true
+    ports:
+      - '9876:9876/udp'
+      - '9877:9877/udp'
+    restart: unless-stopped
+    network_mode: bridge

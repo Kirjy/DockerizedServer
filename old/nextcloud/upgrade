@@ -1,0 +1,2 @@
+# Does a manual upgrade of your Nextcloud instance
+docker exec -it --user www-data nextcloud-app /var/www/html/occ upgrade

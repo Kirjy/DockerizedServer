@@ -1,0 +1,22 @@
+networks:
+  frontend:
+    external: true
+  backend:
+
+services:
+  filebrowser:
+    container_name: filebrowser-app
+    restart: unless-stopped
+    image: 'filebrowser/filebrowser:s6'
+    ports:
+      - '8089:80'
+    environment:
+      - PGID=1000
+      - PUID=1000
+    volumes:
+      - './data/config:/config'
+      - './data/database:/database'
+      - './data/root:/srv'
+    networks:
+      - backend
+      - frontend

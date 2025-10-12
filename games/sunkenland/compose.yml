@@ -1,0 +1,23 @@
+services:
+  sunkenland:
+    container_name: sunkenland-dedicated-server
+    image: melle2/sunkenland-ds:latest
+    restart: always
+    environment:
+      GAME_WORLD_GUID: ${GAME_WORLD_GUID}
+      GAME_PASSWORD: ${GAME_PASSWORD}
+      GAME_REGION: eu
+      GAME_MAX_PLAYER: 2
+      GAME_SESSION_INVISIBLE: true
+      GAME_UPDATE: true
+    ports:
+      - 27015:27015
+    volumes:
+      - ./data/:/sunkenland/Worlds
+    build:
+      secrets:
+        - sunkenland_game_world_guid
+
+secrets:
+  sunkenland_game_world_guid:
+    environment: GAME_WORLD_GUID

@@ -1,0 +1,30 @@
+networks:
+  frontend:
+    external: true
+  backend:
+
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden-app
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+     - 9445:80 #map any custom port to use (replace 9445 not 80)
+    volumes:
+     - ./data:/data:rw
+    environment:
+     - ADMIN_TOKEN=${ADMIN_TOKEN}
+     - WEBSOCKET_ENABLED=true
+     - SIGNUPS_ALLOWED=${SIGNUPS_ALLOWED}
+     - SMTP_HOST=${SMTP_HOST}
+     - SMTP_FROM=${SMTP_FROM}
+     - SMTP_PORT=${SMTP_PORT}
+     - SMTP_SECURITY=${SMTP_SECURITY}
+     - SMTP_USERNAME=${SMTP_USERNAME}
+     - SMTP_PASSWORD=${SMTP_PASSWORD}
+     - DOMAIN=${DOMAIN}
+    networks:
+      - backend
+      - frontend

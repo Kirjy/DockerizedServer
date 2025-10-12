@@ -1,0 +1,6 @@
+# checkes the permissions
+docker exec -ti nextcloud-app chown -R www-data:www-data /var/www/html/data
+# refreshes the files' list in case you added some manually
+docker exec -ti --user www-data nextcloud-app /var/www/html/occ files:scan --all
+# scans the files to generate thumbnails. Needs the preview generator app to be installed first.
+docker exec -ti --user www-data nextcloud-app /var/www/html/occ preview:generate-all
