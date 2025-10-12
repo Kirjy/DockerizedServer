@@ -1,2 +1,5 @@
-/*/data
-*.env
+/*/data 
+*.env 
+data/ 
+.env
+nextcloud/bruteforce
