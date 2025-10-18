@@ -3,3 +3,4 @@
 data/ 
 .env
 nextcloud/bruteforce
+nginx-proxy-manager/letsencrypt/
