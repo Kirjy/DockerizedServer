@@ -21,6 +21,18 @@ services:
       - TZ=Europe/Paris
       - DISABLE_JEMALLOC:true
 
+  matter-hub:
+    image: ghcr.io/t0bst4r/home-assistant-matter-hub:latest
+    restart: unless-stopped
+    network_mode: host
+    environment: # more options can be found in the configuration section
+      - HAMH_HOME_ASSISTANT_URL=${LOCAL_URL}
+      - HAMH_HOME_ASSISTANT_ACCESS_TOKEN=${ACCESS_TOKEN}
+      - HAMH_LOG_LEVEL=info
+      - HAMH_HTTP_PORT=8482
+    volumes:
+      - ./data/ha-assistant-matter-hub:/data
+
 #  mqtt:
 #    container_name: z2m-mosquitto
 #    image: eclipse-mosquitto:latest
