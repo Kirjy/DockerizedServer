@@ -54,8 +54,8 @@ services:
     working_dir: "/photoprism" # do not change or remove
     ## Storage Folders: "~" is a shortcut for your home directory, "." for the current directory
     volumes:
-      - "/media/share/thailand/Pictures:/photoprism/originals"               # Original media files (DO NOT REMOVE)
-      - "/media/share/thailand/storage:/photoprism/storage"                  # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
+      - ${DATA_FOLDER}/Pictures:/photoprism/originals               # Original media files (DO NOT REMOVE)
+      - ${DATA_FOLDER}/storage:/photoprism/storage                  # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
     container_name: photoprism-app
 
   ## Database Server (recommended)
