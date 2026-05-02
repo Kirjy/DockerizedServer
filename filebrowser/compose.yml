@@ -15,8 +15,8 @@ services:
       - PUID=1000
     volumes:
       - './data/config:/config'
-      - './data/database:/database'
-      - './data/root:/srv'
+      - '${DATA_FOLDER}/database:/database'
+      - '${DATA_FOLDER}/root:/srv'
     networks:
       - backend
       - frontend

@@ -21,11 +21,12 @@ services:
     environment:
       PHOTOPRISM_ADMIN_USER: ${PHOTOPRISM_ADMIN_USER}                 # admin login username
       PHOTOPRISM_ADMIN_PASSWORD: ${PHOTOPRISM_ADMIN_PASSWORD}          # initial admin password (8-72 characters)
-      PHOTOPRISM_AUTH_MODE: ${PHOTOPRISM_SITE_URL}               # authentication mode (public, password)
+      PHOTOPRISM_AUTH_MODE: "password"               # authentication mode (public, password)
       PHOTOPRISM_SITE_URL: ${PHOTOPRISM_SITE_URL}  # server URL in the format "http(s)://domain.name(:port)/(path)"
       PHOTOPRISM_DISABLE_TLS: "false"                # disables HTTPS/TLS even if the site URL starts with https:// and a certificate is available
       PHOTOPRISM_DEFAULT_TLS: "false"                 # defaults to a self-signed HTTPS/TLS certificate if no other certificate is available
       PHOTOPRISM_ORIGINALS_LIMIT: 5000               # file size limit for originals in MB (increase for high-res video)
+      PHOTOPRISM_UPLOAD_LIMIT: 5000
       PHOTOPRISM_HTTP_COMPRESSION: "gzip"            # improves transfer speed and bandwidth utilization (none or gzip)
       PHOTOPRISM_LOG_LEVEL: "info"                   # log level: trace, debug, info, warning, error, fatal, or panic
       PHOTOPRISM_READONLY: "false"                   # do not modify originals directory (reduced functionality)
@@ -53,8 +54,8 @@ services:
     working_dir: "/photoprism" # do not change or remove
     ## Storage Folders: "~" is a shortcut for your home directory, "." for the current directory
     volumes:
-      - "./data/Pictures:/photoprism/originals"               # Original media files (DO NOT REMOVE)
-      - "./data/storage:/photoprism/storage"                  # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
+      - "/media/share/thailand/Pictures:/photoprism/originals"               # Original media files (DO NOT REMOVE)
+      - "/media/share/thailand/storage:/photoprism/storage"                  # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
     container_name: photoprism-app
 
   ## Database Server (recommended)

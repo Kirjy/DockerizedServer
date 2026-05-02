@@ -1,0 +1,35 @@
+services:
+  server:
+    restart: always
+    container_name: ark_server_valguero
+    image: hermsi/ark-server:latest
+    volumes:
+      - ./data/ark-server:/app
+      - ./data/ark-server-backups:/home/steam/ARK-Backups
+    environment:
+      - SESSION_NAME=${SESSION_NAME}
+      - SERVER_MAP=${SERVER_MAP}
+      - SERVER_PASSWORD=${SERVER_PASSWORD}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - MAX_PLAYERS=${MAX_PLAYERS}
+      - UPDATE_ON_START=${UPDATE_ON_START}
+      - BACKUP_ON_STOP=${BACKUP_ON_STOP}
+      - PRE_UPDATE_BACKUP=${PRE_UPDATE_BACKUP}
+      - WARN_ON_STOP=${WARN_ON_STOP}
+      - GAME_MOD_IDS=${GAME_MODS_IDS}
+      - DISABLE_BATTLEYE={DISABLE_BATTLEYE}
+      - GAME_CLIENT_PORT=${GAME_CLIENT_PORT}
+      - UDP_SOCKET_PORT=${UDP_SOCKET_PORT}
+      - RCON_PORT=${RCON_PORT}
+      - SERVER_LIST_PORT=${SERVER_LIST_PORT}
+    ports:
+      # Port for connections from ARK game client
+      - "${GAME_CLIENT_PORT}:${GAME_CLIENT_PORT}/udp"
+      # Raw UDP socket port (always Game client port +1)
+      - "${UDP_SOCKET_PORT}:${UDP_SOCKET_PORT}/udp"
+      # RCON management port
+      - "${RCON_PORT}:${RCON_PORT}/tcp"
+      # Steam's server-list port
+      - "${SERVER_LIST_PORT}:${SERVER_LIST_PORT}/udp"
+    networks:
+      - default
